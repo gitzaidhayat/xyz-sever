@@ -11,6 +11,10 @@ export const authApi = {
 
   register: async (userData) => {
     const response = await apiClient.post('/api/auth/user/register', userData);
+    // Store token in localStorage for cross-domain authentication
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     return response.data;
   },
 
@@ -21,6 +25,10 @@ export const authApi = {
       password: credentials.password
     };
     const response = await apiClient.post('/api/auth/user/login', loginData);
+    // Store token in localStorage for cross-domain authentication
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     return response.data;
   },
 
@@ -40,6 +48,8 @@ export const authApi = {
   // Logout user
   logout: async () => {
     const response = await apiClient.get('/api/auth/user/logout');
+    // Remove token from localStorage
+    localStorage.removeItem('token');
     return response.data;
   },
 
@@ -50,6 +60,10 @@ export const authApi = {
       password: credentials.password
     };
     const response = await apiClient.post('/api/auth/admin/login', loginData);
+    // Store token in localStorage for cross-domain authentication
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
     return response.data;
   },
 
@@ -60,6 +74,8 @@ export const authApi = {
 
   adminLogout: async () => {
     const response = await apiClient.get('/api/auth/admin/logout');
+    // Remove token from localStorage
+    localStorage.removeItem('token');
     return response.data;
   },
 

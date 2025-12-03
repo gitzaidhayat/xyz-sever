@@ -10,10 +10,13 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor - cookies are sent automatically with withCredentials
+// Request interceptor - add Authorization header with token from localStorage
 apiClient.interceptors.request.use(
   (config) => {
-    // Cookies are automatically sent with withCredentials: true
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
